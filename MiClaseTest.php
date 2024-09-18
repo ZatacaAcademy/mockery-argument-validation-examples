@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Src;
+namespace Tests\Src\EjemplosDoblesPrueba;
 
 use Hamcrest\Matchers;
 use Mockery;
@@ -38,16 +38,16 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo(1, 2);
 
         // Fallaría
-        //$this->mock->miMetodo(1, 3);
+        $this->mock->miMetodo(1, 3);
 
         // También pasaría porque with y withArgs no aplican validación de tipo, salvo en objetos
-        // $this->mock->miMetodo('1', 2);
-        // $this->mock->miMetodo(true, 2);
+        $this->mock->miMetodo('1', 2);
+        $this->mock->miMetodo(true, 2);
 
-        // $this->mock->shouldReceive('miMetodo')
-        //     ->once()
-        //     ->with(1, 2)
-        //     ->with(Mockery::type('int'), Mockery::type('int'));
+        $this->mock->shouldReceive('miMetodo')
+            ->once()
+            ->with(1, 2)
+            ->with(Mockery::type('int'), Mockery::type('int'));
     }
 
     public function test_with_con_validacion_estricta_de_objeto()
@@ -66,7 +66,7 @@ class MiClaseTest extends TestCase
 
         // Esto fallará, porque aunque $obj2 tenga las mismas propiedades y valores,
         // no es estrictamente el mismo objeto (referencia diferente)
-        // $this->mock->miMetodo($obj2);
+        $this->mock->miMetodo($obj2);
     }
 
     public function test_with_con_validacion_laxa_de_objeto()
@@ -105,7 +105,7 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo();
 
         // Fallaría
-        // $this->mock->miMetodo(1);
+        $this->mock->miMetodo(1);
     }
 
     public function test_with_mockery_on_para_condiciones_personalizadas_con_un_closure()
@@ -121,7 +121,7 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo(5);
 
         // Fallaría
-        // $this->mock->miMetodo(0);
+        $this->mock->miMetodo(0);
     }
 
     public function test_with_args_para_condiciones_personalizadas_con_un_closure()
@@ -137,8 +137,8 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo(1, 5);
 
         // Fallaría
-        // $this->mock->miMetodo(0, 5);
-        // $this->mock->miMetodo(1, 15);
+        $this->mock->miMetodo(0, 5);
+        $this->mock->miMetodo(1, 15);
     }
 
     public function test_with_mockery_pattern()
@@ -152,7 +152,7 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo('patron');
 
         // Fallaría
-        // $this->mock->miMetodo('otro valor');
+        $this->mock->miMetodo('otro valor');
     }
 
     public function test_withSomeOfArgs()
@@ -162,10 +162,10 @@ class MiClaseTest extends TestCase
 
         // Pasarían porque los argumentos 1, 2, 3 están presentes, aunque haya otros adicionales
         $this->mock->miMetodo(1, 2, 3, 4);
-        // $this->mock->miMetodo(1, 2, 3);
+        $this->mock->miMetodo(1, 2, 3);
 
         // Fallaría porque falta uno de los argumentos indicados (en este caso, falta 1)
-        // $this->mock->miMetodo(2, 3);
+        $this->mock->miMetodo(2, 3);
     }
 
     public function test_with_mockery_anyOf()
@@ -175,10 +175,10 @@ class MiClaseTest extends TestCase
 
         // Pasaría
         $this->mock->miMetodo(1);
-        // $this->mock->miMetodo(3);
+        $this->mock->miMetodo(3);
 
         // Fallaría
-        // $this->mock->miMetodo(4);
+        $this->mock->miMetodo(4);
     }
 
     public function test_with_mockery_not()
@@ -190,7 +190,7 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo(2);
 
         // Fallaría
-        //$this->mock->miMetodo(1);
+        $this->mock->miMetodo(1);
     }
 
     public function test_with_mockery_notAnyOf()
@@ -202,7 +202,7 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo(4);
 
         // Fallaría
-        // $this->mock->miMetodo(1);
+        $this->mock->miMetodo(1);
     }
 
     public function test_with_mockery_ducktype()
@@ -228,7 +228,7 @@ class MiClaseTest extends TestCase
             {
             }
         };
-        // $this->mock->miMetodo($objetoInvalido);
+        $this->mock->miMetodo($objetoInvalido);
     }
 
     public function test_with_mockery_subset()
@@ -240,7 +240,7 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo(['clave1' => 'valor1', 'clave2' => 'valor2', 'clave3' => 'valor3']);
 
         // Fallaría
-        // $this->mock->miMetodo(['clave1' => 'valor1']);
+        $this->mock->miMetodo(['clave1' => 'valor1']);
     }
 
     public function test_with_mockery_contains()
@@ -252,7 +252,7 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo(['valor1', 'valor2', 'valor3']);
 
         // Fallaría
-        // $this->mock->miMetodo(['valor1', 'valor3']);
+        $this->mock->miMetodo(['valor1', 'valor3']);
     }
 
     public function test_with_mockery_has_key()
@@ -264,7 +264,7 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo(['clave' => 'valor', 'otra_clave' => 'otro_valor']);
 
         // Fallaría
-        // $this->mock->miMetodo(['otra_clave' => 'otro_valor']);
+        $this->mock->miMetodo(['otra_clave' => 'otro_valor']);
     }
 
     public function test_with_mockery_hasValue()
@@ -276,6 +276,100 @@ class MiClaseTest extends TestCase
         $this->mock->miMetodo(['clave' => 'valor', 'otra_clave' => 'otro_valor']);
 
         // Fallaría
-        // $this->mock->miMetodo(['clave' => 'otro_valor']);
+        $this->mock->miMetodo(['clave' => 'otro_valor']);
+    }
+
+    public function test_andReturn()
+    {
+        // Se espera que 'miMetodo' devuelva 'valor' siempre que sea llamado
+        $this->mock->shouldReceive('miMetodo')->andReturn('valor');
+        // $this->mock->shouldReceive('miMetodo')->andReturns('valor');     // Equivalente
+
+        // Pasaría
+        $this->assertEquals('valor', $this->mock->miMetodo());
+    }
+
+    public function test_andReturn_multiples_valores()
+    {
+        // Se espera que 'miMetodo' devuelva 'valor1', 'valor2' y 'valor3' en la primera,
+        // segunda y tercera llamada, respectivamente
+        $this->mock->shouldReceive('miMetodo')->andReturn('valor1', 'valor2', 'valor3');
+        // $this->mock->shouldReceive('miMetodo')->andReturnValues(['valor1', 'valor2', 'valor3']);    // Equivalente
+
+        // Pasarían
+        $this->assertEquals('valor1', $this->mock->miMetodo());
+        $this->assertEquals('valor2', $this->mock->miMetodo());
+        $this->assertEquals('valor3', $this->mock->miMetodo());
+    }
+
+    public function test_andReturn_multiples_valores_siguientes_el_mismo()
+    {
+        // En caso de que se hagan más llamadas de las esperadas, se devolverá el último valor
+        // Se espera que 'miMetodo' devuelva 'valor1', en la primera llamada, y 'valor2' en las siguientes
+        $this->mock->shouldReceive('miMetodo')->andReturn('valor1', 'valor2');
+
+        // Pasarían
+        $this->assertEquals('valor1', $this->mock->miMetodo());
+        $this->assertEquals('valor2', $this->mock->miMetodo());
+        $this->assertEquals('valor2', $this->mock->miMetodo());
+    }
+
+    public function test_andReturnUsing()
+    {
+        // Se espera que el valor de retorno sea calculado con un callback
+        $this->mock->shouldReceive('miMetodo')->andReturnUsing(function ($argumento) {
+            return $argumento * 2;
+        });
+
+        // Pasaría
+        $this->assertEquals(10, $this->mock->miMetodo(5));
+    }
+
+    public function test_andReturnArg()
+    {
+        // Se espera que el método devuelva el argumento en el índice 1
+        $this->mock->shouldReceive('miMetodo')->andReturnArg(1);
+
+        // Pasaría
+        $this->assertEquals('valor2', $this->mock->miMetodo('valor1', 'valor2'));
+    }
+
+    public function test_andReturnSelf()
+    {
+        // Se espera que devuelva la instancia de la clase mockeada
+        $this->mock->shouldReceive('miMetodo')->andReturnSelf();
+
+        // Pasaría
+        $this->assertSame($this->mock, $this->mock->miMetodo());
+    }
+
+    public function test_andReturnNull()
+    {
+        // Se espera que devuelva null
+        $this->mock->shouldReceive('miMetodo')->andReturnNull();
+        // $this->mock->shouldReceive('miMetodo')->andReturn(null);    // Equivalente
+
+        // Pasaría
+        $this->assertNull($this->mock->miMetodo());
+    }
+
+    public function test_andReturnTrue()
+    {
+        // Se espera que devuelva true
+        $this->mock->shouldReceive('miMetodo')->andReturnTrue();
+        // $this->mock->shouldReceive('miMetodo')->andReturn(true);    // Equivalente
+
+        // Pasaría
+        $this->assertTrue($this->mock->miMetodo());
+    }
+
+    public function test_andReturnFalse()
+    {
+        // Se espera que devuelva false
+        $this->mock->shouldReceive('miMetodo')->andReturnFalse();
+        // $this->mock->shouldReceive('miMetodo')->andReturn(false);    // Equivalente
+
+        // Pasaría
+        $this->assertFalse($this->mock->miMetodo());
     }
 }
